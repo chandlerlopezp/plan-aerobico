@@ -173,6 +173,7 @@
   .phase-tab.active[data-phase="1"] { border-bottom-color: var(--accent-coral); }
   .phase-tab.active[data-phase="2"] { border-bottom-color: var(--accent-green); }
   .phase-tab.active[data-phase="3"] { border-bottom-color: var(--accent-amber); }
+  .phase-tab.active[data-phase="4"] { border-bottom-color: #b47fff; }
 
   /* MAIN CONTENT */
   .main {
@@ -485,23 +486,321 @@
     color: var(--muted);
   }
 
+  /* EJERCICIOS EN CASA — solapa */
+  .ejercicios-wrap { width: 100%; animation: fadeUp 0.3s ease; }
+
+  .ej-intro {
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-bottom: 28px;
+    font-size: 13px;
+    color: var(--muted2);
+    line-height: 1.7;
+  }
+  .ej-intro strong { color: var(--text); font-weight: 500; }
+
+  .ej-filters {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .ej-filter-btn {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 4px;
+    border: 1px solid var(--border2);
+    background: transparent;
+    color: var(--muted2);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .ej-filter-btn:hover { color: var(--text); border-color: var(--border2); }
+  .ej-filter-btn.active-all { background: rgba(255,255,255,0.07); color: var(--text); border-color: rgba(255,255,255,0.2); }
+  .ej-filter-btn.active-hiit { background: rgba(79,156,249,0.12); color: var(--accent-blue); border-color: rgba(79,156,249,0.3); }
+  .ej-filter-btn.active-tabata { background: rgba(249,200,79,0.12); color: var(--accent-amber); border-color: rgba(249,200,79,0.3); }
+  .ej-filter-btn.active-speed { background: rgba(249,112,80,0.12); color: var(--accent-coral); border-color: rgba(249,112,80,0.3); }
+  .ej-filter-btn.active-liss { background: rgba(79,207,143,0.12); color: var(--accent-green); border-color: rgba(79,207,143,0.3); }
+
+  .ej-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 10px;
+    margin-bottom: 36px;
+  }
+
+  .ej-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+    overflow: hidden;
+    user-select: none;
+  }
+  .ej-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+  }
+  .ej-card.cat-hiit::before { background: var(--accent-blue); }
+  .ej-card.cat-tabata::before { background: var(--accent-amber); }
+  .ej-card.cat-speed::before { background: var(--accent-coral); }
+  .ej-card.cat-liss::before { background: var(--accent-green); }
+
+  .ej-card:hover { background: #202020; border-color: var(--border2); }
+  .ej-card.selected { border-color: rgba(255,255,255,0.25); background: #1e1e1e; }
+  .ej-card.selected .ej-check { opacity: 1; }
+
+  .ej-check {
+    position: absolute;
+    top: 12px; right: 12px;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--accent-green);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+  .ej-check svg { display: block; }
+
+  .ej-cat-tag {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 5px;
+  }
+  .ej-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .ej-desc {
+    font-size: 12px;
+    color: var(--muted2);
+    line-height: 1.5;
+    margin-bottom: 6px;
+  }
+  .ej-tags {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+  .ej-tag {
+    font-family: var(--mono);
+    font-size: 9px;
+    padding: 2px 7px;
+    border-radius: 3px;
+    background: rgba(255,255,255,0.05);
+    color: var(--muted);
+  }
+
+  /* RUTINA BUILDER */
+  .rutina-builder {
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-top: 8px;
+  }
+  .rutina-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .rutina-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted2);
+  }
+  .rutina-actions {
+    display: flex;
+    gap: 8px;
+  }
+  .btn-rutina {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 4px;
+    border: 1px solid var(--border2);
+    background: transparent;
+    color: var(--muted2);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-rutina:hover { color: var(--text); }
+  .btn-rutina.primary {
+    background: rgba(79,207,143,0.12);
+    color: var(--accent-green);
+    border-color: rgba(79,207,143,0.3);
+  }
+  .btn-rutina.primary:hover { background: rgba(79,207,143,0.2); }
+
+  .rutina-format-select {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .format-opt {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .format-opt.active {
+    background: rgba(79,156,249,0.12);
+    color: var(--accent-blue);
+    border-color: rgba(79,156,249,0.3);
+  }
+
+  .rutina-empty {
+    text-align: center;
+    padding: 28px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .rutina-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .rutina-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 14px;
+  }
+  .rutina-item-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    width: 20px;
+    flex-shrink: 0;
+  }
+  .rutina-item-name {
+    flex: 1;
+    font-size: 13px;
+    color: var(--text);
+  }
+  .rutina-item-time {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted2);
+    white-space: nowrap;
+  }
+  .rutina-item-remove {
+    width: 20px; height: 20px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--muted);
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all 0.15s;
+    background: transparent;
+    border: none;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  .rutina-item-remove:hover { color: var(--accent-coral); background: rgba(249,112,80,0.1); }
+
+  .rutina-totals {
+    display: flex;
+    gap: 16px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .rutina-total-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .rutina-total-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .rutina-total-val {
+    font-family: var(--mono);
+    font-size: 16px;
+    color: var(--text);
+  }
+
   /* RESPONSIVE */
   @media (max-width: 768px) {
-    .hero { padding: 48px 20px 40px; }
-    .phase-nav { padding: 0 20px; }
-    .main { padding: 24px 20px 60px; }
-    .legend { padding: 12px 20px; }
-    footer { padding: 20px; }
-    .phase-header { grid-template-columns: 1fr 1fr; }
+    .hero { padding: 40px 16px 32px; }
+    .phase-nav { padding: 0; }
+    .phase-nav-inner { padding: 0 4px; }
+    .main { padding: 20px 16px 60px; }
+    .legend { padding: 10px 16px; gap: 12px; }
+    footer { padding: 16px; flex-direction: column; gap: 6px; text-align: center; }
+    .phase-header { grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 24px; }
+    .phase-meta-card { padding: 14px; }
     .sessions-container.cols-2,
     .sessions-container.cols-3 { grid-template-columns: 1fr; }
-    h1 { font-size: 56px; }
-    .phase-tab { padding: 14px 14px; font-size: 11px; }
+    h1 { font-size: clamp(48px, 13vw, 72px); }
+    .phase-tab { padding: 12px 10px; font-size: 10px; letter-spacing: 0.04em; }
+    .week-row { grid-template-columns: 48px 1fr; }
+    .week-num-col { padding: 16px 10px 16px 0; }
+    .week-content-col { padding: 16px 0 16px 14px; }
+    .session-block { padding: 12px 13px; }
+    .hero-stats { gap: 16px; }
+    .hero-stat-val { font-size: 22px; }
+    .ej-grid { grid-template-columns: 1fr; }
+    .rutina-builder { padding: 16px; }
   }
 
   @media (max-width: 480px) {
-    .phase-header { grid-template-columns: 1fr; }
-    .hero-stats { gap: 20px; }
+    .hero { padding: 32px 16px 24px; }
+    .phase-header { grid-template-columns: 1fr 1fr; gap: 6px; }
+    .hero-stats { gap: 12px; }
+    .hero-stat-val { font-size: 20px; }
+    .phase-tip { padding: 14px 16px; gap: 10px; }
+    .tip-icon { width: 26px; height: 26px; flex-shrink: 0; }
+    .week-row { grid-template-columns: 40px 1fr; }
+    .week-num-col { padding: 14px 8px 14px 0; }
+    .week-content-col { padding: 14px 0 14px 12px; }
+    .week-title-text { font-size: 13px; }
+    .rutina-format-select { gap: 6px; }
+    .format-opt { font-size: 9px; padding: 4px 9px; }
+    .ej-filters { gap: 6px; }
+    .ej-filter-btn { font-size: 9px; padding: 4px 10px; }
   }
 </style>
 </head>
@@ -521,7 +820,7 @@
       <span class="hero-stat-label">Por sesión</span>
     </div>
     <div class="hero-stat">
-      <span class="hero-stat-val">4</span>
+      <span class="hero-stat-val">5</span>
       <span class="hero-stat-label">Fases / Solapas</span>
     </div>
     <div class="hero-stat">
@@ -544,6 +843,7 @@
     <button class="phase-tab" data-phase="1" onclick="setPhase(1)">Fase 2 — Desarrollo</button>
     <button class="phase-tab" data-phase="2" onclick="setPhase(2)">Fase 3 — Consolidación</button>
     <button class="phase-tab" data-phase="3" onclick="setPhase(3)">Correr en Casa</button>
+    <button class="phase-tab" data-phase="4" onclick="setPhase(4)">Ejercicios</button>
   </div>
 </nav>
 
@@ -833,6 +1133,175 @@ const phases = [
 
 let activePhase = 0;
 
+// ─── EJERCICIOS DATA ────────────────────────────────────────────────
+const ejercicios = [
+  // HIIT / Cardio explosivo
+  { id: 1, cat: 'hiit', name: 'Saltos de estrella', desc: 'Pies juntos, salto abriendo brazos y piernas simultáneamente. Clásico aeróbico.', tags: ['full body','bajo impacto mod.'], tiempo: 30 },
+  { id: 2, cat: 'hiit', name: 'Burpees', desc: 'Plancha → push-up → salto con palmas arriba. Ejercicio completo de alta intensidad.', tags: ['full body','exigente'], tiempo: 30 },
+  { id: 3, cat: 'hiit', name: 'Jump squats', desc: 'Sentadilla y salto explosivo al subir. Potencia de piernas + cardio.', tags: ['piernas','explosivo'], tiempo: 30 },
+  { id: 4, cat: 'hiit', name: 'High knees', desc: 'Correr en el lugar llevando rodillas al pecho a máxima velocidad. Cardio puro.', tags: ['piernas','ritmo'], tiempo: 30 },
+  { id: 5, cat: 'hiit', name: 'Box jumps (silla)', desc: 'Saltar sobre una silla o step resistente. Potencia y altura.', tags: ['piernas','explosivo'], tiempo: 20 },
+  { id: 6, cat: 'hiit', name: 'Tuck jumps', desc: 'Saltar llevando ambas rodillas al pecho en el aire. Muy exigente.', tags: ['full body','exigente'], tiempo: 20 },
+  { id: 7, cat: 'hiit', name: 'Lateral bounds', desc: 'Saltos laterales de un pie al otro, como patinador. Coordination + cardio.', tags: ['piernas','lateral'], tiempo: 30 },
+  { id: 8, cat: 'hiit', name: 'Squat + kick frontal', desc: 'Sentadilla y al subir dar una patada frontal alternando piernas.', tags: ['piernas','coordinación'], tiempo: 30 },
+  // TABATA / Fuerza-resistencia
+  { id: 9, cat: 'tabata', name: 'Sentadillas', desc: 'El clásico. Pies al ancho de hombros, bajar hasta 90° y subir.', tags: ['piernas','glúteos'], tiempo: 20 },
+  { id: 10, cat: 'tabata', name: 'Push-ups', desc: 'Flexiones de pecho. Variaciones: ancha, cerrada, inclinada.', tags: ['pecho','tríceps'], tiempo: 20 },
+  { id: 11, cat: 'tabata', name: 'Lunges alternos', desc: 'Zancadas alternando pierna. Bajar la rodilla trasera casi al suelo.', tags: ['piernas','equilibrio'], tiempo: 20 },
+  { id: 12, cat: 'tabata', name: 'Dips en silla', desc: 'Apoyar manos en silla atrás, bajar el cuerpo flexionando codos.', tags: ['tríceps','pecho'], tiempo: 20 },
+  { id: 13, cat: 'tabata', name: 'Glute bridges', desc: 'Tumbado boca arriba, pies apoyados. Subir caderas contrayendo glúteos.', tags: ['glúteos','isquios'], tiempo: 20 },
+  { id: 14, cat: 'tabata', name: 'Superman', desc: 'Boca abajo, levantar brazos y piernas simultáneamente. Cadena posterior.', tags: ['espalda','glúteos'], tiempo: 20 },
+  { id: 15, cat: 'tabata', name: 'Sumo squat', desc: 'Sentadilla con pies muy abiertos y puntas hacia afuera. Aductor + glúteo.', tags: ['piernas','aductor'], tiempo: 20 },
+  { id: 16, cat: 'tabata', name: 'Pike push-ups', desc: 'Push-up con cadera en alto (forma de V), trabaja hombros principalmente.', tags: ['hombros','tríceps'], tiempo: 20 },
+  // VELOCIDAD / Coordinación
+  { id: 17, cat: 'speed', name: 'Mountain climbers', desc: 'Posición de plancha, llevar rodillas al pecho alternando rápidamente.', tags: ['core','cardio'], tiempo: 30 },
+  { id: 18, cat: 'speed', name: 'Skipping bajo', desc: 'Carrera en el lugar con rodillas bajas, enfocado en frecuencia y braceo.', tags: ['piernas','ritmo'], tiempo: 30 },
+  { id: 19, cat: 'speed', name: 'Shadow boxing', desc: 'Combinaciones de golpes al aire: jab, cross, uppercut, gancho. Moverse.', tags: ['full body','coordinación'], tiempo: 45 },
+  { id: 20, cat: 'speed', name: 'Ankle hops', desc: 'Saltos mínimos con tobillos, como la soga sin soga. Máxima frecuencia.', tags: ['piernas','frecuencia'], tiempo: 30 },
+  { id: 21, cat: 'speed', name: 'Lateral shuffles', desc: 'Desplazamientos rápidos de lado a lado. 4 pasos → cambio de dirección.', tags: ['piernas','lateral'], tiempo: 30 },
+  { id: 22, cat: 'speed', name: 'Plank to downdog', desc: 'Desde plancha, subir caderas a posición perro boca abajo, alternado.', tags: ['core','hombros'], tiempo: 30 },
+  { id: 23, cat: 'speed', name: 'Speed skater', desc: 'Salto lateral con toque de pie al piso, imitando el movimiento del patinador.', tags: ['piernas','coordinación'], tiempo: 30 },
+  { id: 24, cat: 'speed', name: 'Crab walks', desc: 'Posición de cangrejo (sentado inverso), caminar en esa posición lateralmente.', tags: ['tríceps','core'], tiempo: 20 },
+  // LISS / Resistencia aeróbica
+  { id: 25, cat: 'liss', name: 'Marcha en lugar', desc: 'Levantar rodillas a 90° caminando en el lugar. RPE 4. Ideal calentamiento.', tags: ['full body','suave'], tiempo: 60 },
+  { id: 26, cat: 'liss', name: 'Step lateral', desc: 'Paso lateral izquierda–derecha rítmico. Brazos coordinados. RPE 4–5.', tags: ['piernas','ritmo'], tiempo: 60 },
+  { id: 27, cat: 'liss', name: 'Toe taps en step', desc: 'Tocar alternadamente una silla o step con la punta del pie. Ritmo constante.', tags: ['piernas','coordinación'], tiempo: 60 },
+  { id: 28, cat: 'liss', name: 'Groover / dance steps', desc: 'Pasos de baile libres al ritmo de música. Cardio leve y divertido.', tags: ['full body','suave'], tiempo: 60 },
+  { id: 29, cat: 'liss', name: 'Standing abs', desc: 'Crunch lateral de pie: llevar codo a rodilla opuesta, alternando. RPE 4.', tags: ['core','suave'], tiempo: 45 },
+  { id: 30, cat: 'liss', name: 'Glute kickbacks', desc: 'En cuadrupedia, extender pierna hacia atrás y arriba lentamente. Glúteo.', tags: ['glúteos','suave'], tiempo: 45 },
+];
+
+const catColors = { hiit: 'var(--accent-blue)', tabata: 'var(--accent-amber)', speed: 'var(--accent-coral)', liss: 'var(--accent-green)' };
+const catLabels = { hiit: 'HIIT / Cardio', tabata: 'Tabata / Fuerza', speed: 'Velocidad', liss: 'LISS / Suave' };
+const formatOptions = [
+  { id: 'tabata', label: 'Tabata 20/10', work: 20, rest: 10, rounds: 8 },
+  { id: 'hiit3030', label: 'HIIT 30/30', work: 30, rest: 30, rounds: 8 },
+  { id: 'hiit4020', label: 'HIIT 40/20', work: 40, rest: 20, rounds: 6 },
+  { id: 'hiit4545', label: 'Intervalos 45/45', work: 45, rest: 45, rounds: 6 },
+  { id: 'amrap', label: 'AMRAP 40 min', work: null, rest: null, rounds: null },
+];
+
+let selectedExercises = [];
+let activeFilter = 'all';
+let activeFormat = 'tabata';
+
+function renderEjercicios() {
+  const filtered = activeFilter === 'all' ? ejercicios : ejercicios.filter(e => e.cat === activeFilter);
+  const fmt = formatOptions.find(f => f.id === activeFormat);
+
+  let rutinaHtml = '';
+  if (selectedExercises.length === 0) {
+    rutinaHtml = `<div class="rutina-empty">Seleccioná ejercicios del índice de arriba para armar tu rutina.<br><span style="font-size:11px;color:var(--muted)">Podés elegir 1, 2 o 3 ejercicios por sesión.</span></div>`;
+  } else {
+    rutinaHtml = '<div class="rutina-list">';
+    let totalSeg = 0;
+    selectedExercises.forEach((ej, i) => {
+      let tiempoLabel = '';
+      if (fmt.work) {
+        const seriesTime = (fmt.work + fmt.rest) * fmt.rounds;
+        totalSeg += seriesTime;
+        tiempoLabel = `${fmt.rounds} × ${fmt.work}/${fmt.rest}s = ${Math.round(seriesTime/60)} min`;
+      } else {
+        totalSeg += 40 * 60 / selectedExercises.length;
+        tiempoLabel = `~${Math.round(40 / selectedExercises.length)} min`;
+      }
+      rutinaHtml += `<div class="rutina-item">
+        <span class="rutina-item-num">${i+1}</span>
+        <span class="rutina-item-name">${ej.name}</span>
+        <span class="rutina-item-time">${tiempoLabel}</span>
+        <button class="rutina-item-remove" onclick="removeEj(${ej.id})" title="Quitar">×</button>
+      </div>`;
+    });
+    rutinaHtml += '</div>';
+    const totalMin = Math.round(totalSeg / 60);
+    const descanso = selectedExercises.length > 1 ? (selectedExercises.length - 1) * 2 : 0;
+    rutinaHtml += `<div class="rutina-totals">
+      <div class="rutina-total-item"><span class="rutina-total-label">Trabajo</span><span class="rutina-total-val">${totalMin} min</span></div>
+      <div class="rutina-total-item"><span class="rutina-total-label">Descanso entre bloq.</span><span class="rutina-total-val">${descanso} min</span></div>
+      <div class="rutina-total-item"><span class="rutina-total-label">Total estimado</span><span class="rutina-total-val">${totalMin + descanso + 15} min</span></div>
+      <div class="rutina-total-item"><span class="rutina-total-label">Ejercicios</span><span class="rutina-total-val">${selectedExercises.length}</span></div>
+    </div>`;
+  }
+
+  const html = `<div class="ejercicios-wrap">
+    <div class="ej-intro">
+      <strong>Índice de ejercicios para armar tu rutina.</strong> Seleccioná 1, 2 o 3 ejercicios, elegí el formato de intervalos, y la app calcula los tiempos totales. Ideal para cuando no podés salir o querés variar el estímulo.
+    </div>
+
+    <div class="ej-filters">
+      <button class="ej-filter-btn ${activeFilter==='all'?'active-all':''}" onclick="setFilter('all')">Todos</button>
+      <button class="ej-filter-btn ${activeFilter==='hiit'?'active-hiit':''}" onclick="setFilter('hiit')">HIIT</button>
+      <button class="ej-filter-btn ${activeFilter==='tabata'?'active-tabata':''}" onclick="setFilter('tabata')">Tabata/Fuerza</button>
+      <button class="ej-filter-btn ${activeFilter==='speed'?'active-speed':''}" onclick="setFilter('speed')">Velocidad</button>
+      <button class="ej-filter-btn ${activeFilter==='liss'?'active-liss':''}" onclick="setFilter('liss')">LISS</button>
+    </div>
+
+    <div class="ej-grid">
+      ${filtered.map(ej => {
+        const sel = selectedExercises.find(s => s.id === ej.id);
+        return `<div class="ej-card cat-${ej.cat} ${sel ? 'selected' : ''}" onclick="toggleEj(${ej.id})">
+          <div class="ej-check"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#0a0a0a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="ej-cat-tag" style="color:${catColors[ej.cat]}">${catLabels[ej.cat]}</div>
+          <div class="ej-name">${ej.name}</div>
+          <div class="ej-desc">${ej.desc}</div>
+          <div class="ej-tags">${ej.tags.map(t => `<span class="ej-tag">${t}</span>`).join('')}</div>
+        </div>`;
+      }).join('')}
+    </div>
+
+    <div class="rutina-builder">
+      <div class="rutina-header">
+        <span class="rutina-title">🏋 Mi rutina</span>
+        <div class="rutina-actions">
+          ${selectedExercises.length > 0 ? `<button class="btn-rutina" onclick="clearRutina()">Limpiar</button>` : ''}
+        </div>
+      </div>
+      <div class="rutina-format-select">
+        ${formatOptions.map(f => `<button class="format-opt ${activeFormat===f.id?'active':''}" onclick="setFormat('${f.id}')">${f.label}</button>`).join('')}
+      </div>
+      ${rutinaHtml}
+    </div>
+  </div>`;
+
+  document.getElementById('main-content').innerHTML = html;
+}
+
+function toggleEj(id) {
+  const ej = ejercicios.find(e => e.id === id);
+  const idx = selectedExercises.findIndex(s => s.id === id);
+  if (idx >= 0) {
+    selectedExercises.splice(idx, 1);
+  } else {
+    if (selectedExercises.length >= 3) {
+      selectedExercises.shift();
+    }
+    selectedExercises.push(ej);
+  }
+  renderEjercicios();
+}
+
+function removeEj(id) {
+  selectedExercises = selectedExercises.filter(s => s.id !== id);
+  renderEjercicios();
+}
+
+function clearRutina() {
+  selectedExercises = [];
+  renderEjercicios();
+}
+
+function setFilter(f) {
+  activeFilter = f;
+  renderEjercicios();
+}
+
+function setFormat(f) {
+  activeFormat = f;
+  renderEjercicios();
+}
+
+// ─── EXISTING RENDER ─────────────────────────────────────────────────
+
 function badgeClass(type) {
   const map = { trabajo: 'badge-trabajo', intenso: 'badge-intenso', descarga: 'badge-descarga', test: 'badge-test', cierre: 'badge-cierre' };
   return map[type] || 'badge-trabajo';
@@ -850,6 +1319,10 @@ function colsClass(n) {
 }
 
 function renderPhase(idx) {
+  if (idx === 4) {
+    renderEjercicios();
+    return;
+  }
   const p = phases[idx];
   const accentColors = { blue: 'var(--accent-blue)', coral: 'var(--accent-coral)', green: 'var(--accent-green)', amber: 'var(--accent-amber)' };
   const accent = accentColors[p.color];
