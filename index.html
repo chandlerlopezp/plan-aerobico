@@ -1219,7 +1219,7 @@ const phases = [
 ];
 
 let activePhase = 0;
-let completedWeeks = new Set();
+let completedWeeks = new Set(JSON.parse(localStorage.getItem("completedWeeks") || "[]"));
 
 // ─── EJERCICIOS DATA ────────────────────────────────────────────────
 const ejercicios = [
@@ -1541,6 +1541,7 @@ function toggleWeek(weekNum, event) {
   } else {
     completedWeeks.add(weekNum);
   }
+  localStorage.setItem("completedWeeks", JSON.stringify([...completedWeeks]));
   renderPhase(activePhase);
 }
 
