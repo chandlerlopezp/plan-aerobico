@@ -259,6 +259,53 @@
     padding-top: 2px;
   }
 
+  /* COMPLETED WEEK */
+  .week-row.done {
+    background: rgba(255,255,255,0.01);
+  }
+  .week-row.done .week-content-col {
+    opacity: 0.32;
+  }
+  .week-row.done .week-num {
+    text-decoration: line-through;
+    text-decoration-color: var(--accent-green);
+    color: var(--accent-green);
+    opacity: 0.6;
+  }
+  .week-row.done .week-num-col {
+    border-right-color: rgba(79,207,143,0.15);
+  }
+  .complete-btn {
+    margin-left: auto;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border2);
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.18s;
+    flex-shrink: 0;
+    color: transparent;
+  }
+  .complete-btn:hover {
+    border-color: var(--accent-green);
+    background: rgba(79,207,143,0.08);
+  }
+  .complete-btn svg { display: block; }
+  .week-row.done .complete-btn {
+    border-color: var(--accent-green);
+    background: rgba(79,207,143,0.15);
+    color: var(--accent-green);
+  }
+  .week-row.done .complete-btn:hover {
+    background: rgba(249,112,80,0.1);
+    border-color: var(--accent-coral);
+    color: var(--accent-coral);
+  }
+
   .week-content-col {
     padding: 20px 0 20px 24px;
     display: flex;
@@ -1172,6 +1219,7 @@ const phases = [
 ];
 
 let activePhase = 0;
+let completedWeeks = new Set();
 
 // ─── EJERCICIOS DATA ────────────────────────────────────────────────
 const ejercicios = [
@@ -1425,7 +1473,8 @@ function renderPhase(idx) {
   html += '<div class="weeks-grid">';
   for (const w of p.weeks) {
     const sessionCols = colsClass(w.sessions.length);
-    html += `<div class="week-row">
+    const isDone = typeof w.num === 'number' && completedWeeks.has(w.num);
+    html += `<div class="week-row${isDone ? ' done' : ''}">
       <div class="week-num-col">
         <span class="week-num">${typeof w.num === 'number' ? 'S' + w.num : w.num}</span>
       </div>
@@ -1433,6 +1482,9 @@ function renderPhase(idx) {
         <div class="week-top-row">
           <span class="week-type-badge ${badgeClass(w.type)}">${badgeLabel(w.type)}</span>
           <span class="week-title-text">${w.title}</span>
+          ${typeof w.num === 'number' ? `<button class="complete-btn" onclick="toggleWeek(${w.num}, event)" title="${isDone ? 'Marcar pendiente' : 'Marcar completada'}">
+            <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>` : ''}
         </div>
         <div class="sessions-container ${sessionCols}">`;
 
@@ -1480,6 +1532,16 @@ function renderPhase(idx) {
   </div>`;
 
   document.getElementById('main-content').innerHTML = html;
+}
+
+function toggleWeek(weekNum, event) {
+  event.stopPropagation();
+  if (completedWeeks.has(weekNum)) {
+    completedWeeks.delete(weekNum);
+  } else {
+    completedWeeks.add(weekNum);
+  }
+  renderPhase(activePhase);
 }
 
 function setPhase(idx) {
