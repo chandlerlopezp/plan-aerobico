@@ -762,6 +762,46 @@
     color: var(--text);
   }
 
+  /* WEEK IMPORT */
+  .week-import-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+  .week-import-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .week-import-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+  .week-pill {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 4px 9px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .week-pill:hover { color: var(--text); border-color: var(--border2); }
+  .week-pill.active {
+    background: rgba(79,156,249,0.15);
+    color: var(--accent-blue);
+    border-color: rgba(79,156,249,0.4);
+  }
+
   /* RESPONSIVE */
   @media (max-width: 768px) {
     .hero { padding: 40px 16px 32px; }
@@ -1184,6 +1224,35 @@ const formatOptions = [
 let selectedExercises = [];
 let activeFilter = 'all';
 let activeFormat = 'tabata';
+let activeWeekImport = null;
+
+// Mapeo semana → formato sugerido + ejercicios sugeridos (por id)
+const weekPresets = {
+  1:  { fmt: 'hiit3030', ids: [1, 4] },
+  2:  { fmt: 'hiit3030', ids: [1, 3, 4] },
+  3:  { fmt: 'hiit3030', ids: [2, 3, 4, 7] },
+  4:  { fmt: 'hiit4545', ids: [25, 26] },
+  5:  { fmt: 'hiit4020', ids: [1, 2, 4] },
+  6:  { fmt: 'hiit4020', ids: [1, 2, 3, 4] },
+  7:  { fmt: 'hiit3030', ids: [18, 20, 21] },
+  8:  { fmt: 'hiit4545', ids: [25, 29] },
+  9:  { fmt: 'tabata',   ids: [9, 10, 1, 2] },
+  10: { fmt: 'tabata',   ids: [9, 11, 17] },
+  11: { fmt: 'hiit4020', ids: [2, 3, 17, 7] },
+  12: { fmt: 'hiit4545', ids: [25, 26, 29] },
+  13: { fmt: 'hiit4545', ids: [1, 2, 9, 11] },
+  14: { fmt: 'tabata',   ids: [9, 10, 1, 17] },
+  15: { fmt: 'hiit4020', ids: [18, 20, 2, 3] },
+  16: { fmt: 'hiit4545', ids: [25, 26, 27] },
+  17: { fmt: 'hiit4020', ids: [2, 3, 9, 17, 1] },
+  18: { fmt: 'hiit4020', ids: [1, 4, 17, 7, 20] },
+  19: { fmt: 'hiit4545', ids: [18, 25] },
+  20: { fmt: 'hiit4545', ids: [25, 29, 30] },
+  21: { fmt: 'hiit3030', ids: [1, 2, 3, 9] },
+  22: { fmt: 'tabata',   ids: [9, 10, 1, 11, 17] },
+  23: { fmt: 'hiit4020', ids: [2, 3, 6, 17, 1, 9] },
+  24: { fmt: 'hiit4545', ids: [18, 25, 29] },
+};
 
 function renderEjercicios() {
   const filtered = activeFilter === 'all' ? ejercicios : ejercicios.filter(e => e.cat === activeFilter);
@@ -1191,20 +1260,13 @@ function renderEjercicios() {
 
   let rutinaHtml = '';
   if (selectedExercises.length === 0) {
-    rutinaHtml = `<div class="rutina-empty">Seleccioná ejercicios del índice de arriba para armar tu rutina.<br><span style="font-size:11px;color:var(--muted)">Podés elegir 1, 2 o 3 ejercicios por sesión.</span></div>`;
+    rutinaHtml = `<div class="rutina-empty">Seleccioná ejercicios del índice de arriba para armar tu rutina.<br><span style="font-size:11px;color:var(--muted)">Seleccioná todos los ejercicios que quieras.</span></div>`;
   } else {
     rutinaHtml = '<div class="rutina-list">';
-    let totalSeg = 0;
     selectedExercises.forEach((ej, i) => {
-      let tiempoLabel = '';
-      if (fmt.work) {
-        const seriesTime = (fmt.work + fmt.rest) * fmt.rounds;
-        totalSeg += seriesTime;
-        tiempoLabel = `${fmt.rounds} × ${fmt.work}/${fmt.rest}s = ${Math.round(seriesTime/60)} min`;
-      } else {
-        totalSeg += 40 * 60 / selectedExercises.length;
-        tiempoLabel = `~${Math.round(40 / selectedExercises.length)} min`;
-      }
+      let tiempoLabel = fmt.work
+        ? `${fmt.work}s trabajo / ${fmt.rest}s descanso`
+        : 'AMRAP — tiempo libre';
       rutinaHtml += `<div class="rutina-item">
         <span class="rutina-item-num">${i+1}</span>
         <span class="rutina-item-name">${ej.name}</span>
@@ -1213,19 +1275,17 @@ function renderEjercicios() {
       </div>`;
     });
     rutinaHtml += '</div>';
-    const totalMin = Math.round(totalSeg / 60);
     const descanso = selectedExercises.length > 1 ? (selectedExercises.length - 1) * 2 : 0;
     rutinaHtml += `<div class="rutina-totals">
-      <div class="rutina-total-item"><span class="rutina-total-label">Trabajo</span><span class="rutina-total-val">${totalMin} min</span></div>
-      <div class="rutina-total-item"><span class="rutina-total-label">Descanso entre bloq.</span><span class="rutina-total-val">${descanso} min</span></div>
-      <div class="rutina-total-item"><span class="rutina-total-label">Total estimado</span><span class="rutina-total-val">${totalMin + descanso + 15} min</span></div>
       <div class="rutina-total-item"><span class="rutina-total-label">Ejercicios</span><span class="rutina-total-val">${selectedExercises.length}</span></div>
+      ${descanso > 0 ? `<div class="rutina-total-item"><span class="rutina-total-label">Descanso entre bloques</span><span class="rutina-total-val">${descanso} min</span></div>` : ''}
+      <div class="rutina-total-item"><span class="rutina-total-label">Formato</span><span class="rutina-total-val" style="font-size:13px">${fmt.label}</span></div>
     </div>`;
   }
 
   const html = `<div class="ejercicios-wrap">
     <div class="ej-intro">
-      <strong>Índice de ejercicios para armar tu rutina.</strong> Seleccioná 1, 2 o 3 ejercicios, elegí el formato de intervalos, y la app calcula los tiempos totales. Ideal para cuando no podés salir o querés variar el estímulo.
+      <strong>Índice de ejercicios para armar tu rutina.</strong> Seleccioná ejercicios manualmente, o usá <em>Traer semana</em> para importar automáticamente los ejercicios y el formato sugerido para esa semana del plan.
     </div>
 
     <div class="ej-filters">
@@ -1256,6 +1316,12 @@ function renderEjercicios() {
           ${selectedExercises.length > 0 ? `<button class="btn-rutina" onclick="clearRutina()">Limpiar</button>` : ''}
         </div>
       </div>
+      <div class="week-import-row">
+        <span class="week-import-label">Traer semana:</span>
+        <div class="week-import-pills">
+          ${Array.from({length:24},(_,i)=>i+1).map(n=>`<button class="week-pill ${activeWeekImport===n?'active':''}" onclick="importWeek(${n})">S${n}</button>`).join('')}
+        </div>
+      </div>
       <div class="rutina-format-select">
         ${formatOptions.map(f => `<button class="format-opt ${activeFormat===f.id?'active':''}" onclick="setFormat('${f.id}')">${f.label}</button>`).join('')}
       </div>
@@ -1272,9 +1338,6 @@ function toggleEj(id) {
   if (idx >= 0) {
     selectedExercises.splice(idx, 1);
   } else {
-    if (selectedExercises.length >= 3) {
-      selectedExercises.shift();
-    }
     selectedExercises.push(ej);
   }
   renderEjercicios();
@@ -1297,6 +1360,15 @@ function setFilter(f) {
 
 function setFormat(f) {
   activeFormat = f;
+  renderEjercicios();
+}
+
+function importWeek(n) {
+  const preset = weekPresets[n];
+  if (!preset) return;
+  activeWeekImport = n;
+  activeFormat = preset.fmt;
+  selectedExercises = preset.ids.map(id => ejercicios.find(e => e.id === id)).filter(Boolean);
   renderEjercicios();
 }
 
